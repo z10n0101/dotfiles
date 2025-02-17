@@ -1,11 +1,13 @@
-#Add program to fori menu
+# Add callable to Rofi menu:
+e.g.:
 
-##IntelliJ: 
-Untar binaries to /opt/...
+    IntelliJ: 
+        Untar binaries to /opt/...
 
 
-Add desktop entry to $HOME/.local/share/applications/*.desktop
+Add desktop entry to $HOME/.local/share/applications/*.desktop:
 
+```
 [Desktop Entry]
 Version=1.0
 Type=Application
@@ -15,3 +17,4 @@ Exec="/opt/idea/idea-IC-243.24978.46/bin/idea" %f
 iComment=IntelliJ IDEA Integrated Development Environment
 Categories=Development;IDE;
 Terminal=false
+```
