@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=IntelliJ WebStorm
+Icon=/opt/webstorm/WebStorm-243.25659.40/bin/webstorm.png
+Exec="/opt/webstorm/WebStorm-243.25659.40/bin/webstorm" %f
+Comment=IntelliJ WebStorm Integrated Development Environment
+Categories=Development;IDE;
+Terminal=false
