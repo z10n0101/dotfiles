@@ -18,3 +18,14 @@ iComment=IntelliJ IDEA Integrated Development Environment
 Categories=Development;IDE;
 Terminal=false
 ```
+
+
+# Keyboard layout
+
+.config/sway/config
+
+input "type:keyboard" {
+    xkb_layout "us,rs,rs"
+    xkb_variant ",latin,"
+    xkb_options "grp:ctrl_shift_toggle"
+}
