@@ -237,7 +237,7 @@ bindsym $mod+r mode "resize"
 input "type:keyboard" {
     xkb_layout "us,rs,rs"
     xkb_variant ",latin,"
-    xkb_options "grp:ctrl_shift_toggle"
+    xkb_options "grp:alt_space_toggle"
 }
 
 include '$(/usr/libexec/sway/layered-include "/usr/share/sway/config.d/*.conf" "/etc/sway/config.d/*.conf" "${XDG_CONFIG_HOME:-$HOME/.config}/sway/config.d/*.conf")'
