@@ -39,6 +39,11 @@ Adjust Monitor Positions: Use the swaymsg command to set the position of each mo
 
 swaymsg output DP-3 pos 2560 0
 
+or to put eDP-1 to the right 
+
+swaymsg output DP-3 pos 0 0
+swaymsg output eDP-1 pos 2560 240
+
 Toggle Monitors On/Off: If you need to toggle a monitor on or off, you can use:
 swaymsg output DP-3 toggle
 
