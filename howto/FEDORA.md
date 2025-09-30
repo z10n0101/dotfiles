@@ -86,3 +86,7 @@ ERROR: Codec not supported: VLC could not decode the format "hevc" (MPEG-H Part2
 
 sudo dnf-3 groupinstall multimedia
 sudo dnf-3 groupupdate multimedia
+
+
+Fix datetime after reboot:
+sudo timedatectl set-timezone Europe/Belgrade
