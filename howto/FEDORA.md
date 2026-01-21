@@ -90,3 +90,30 @@ sudo dnf-3 groupupdate multimedia
 
 Fix datetime after reboot:
 sudo timedatectl set-timezone Europe/Belgrade
+
+
+# Batery life
+
+# install Dell tool
+sudo dnf install smbios-utils
+
+# Primer: Počni punjenje tek kad padne ispod 50%, i stani na 80%
+sudo smbios-battery-ctl --set-custom-charge-interval 50 80
+
+
+# TLP i Thermald (Obavezno) Instaliraj ova dva servisa:
+
+    TLP: Automatski gasi nepotrebne uređaje kad si na bateriji (bluetooth, audio power save...).
+
+    Thermald: Intelov demon koji sprečava pregrevanje pre nego što hardware throttle-uje.
+sudo apt install tlp thermald
+sudo systemctl enable --now tlp
+sudo systemctl enable --now thermald
+
+D) Auto-cpufreq (Modernija alternativa TLP-u) Mnogi korisnici XPS-a se kunu u alat koji se zove auto-cpufreq. On aktivno menja frekvenciju procesora i "governor" (način rada) u zavisnosti od toga da li si na bateriji ili punjaču. Često daje bolje rezultate nego običan TLP.
+
+
+
+# TODO istrazi opcije za tlp auto-cpufreq ( jedno ili drugo, ne oba da koristis u isto vreme) i thermald (ovo ide automatski)
+
+

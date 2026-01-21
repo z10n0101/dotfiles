@@ -2,8 +2,8 @@
 Version=1.0
 Type=Application
 Name=IntelliJ Pycharm
-Icon=/opt/pycharm/pycharm-community-2024.3.3/bin/pycharm.png
-Exec="/opt/pycharm/pycharm-community-2024.3.3/bin/pycharm" %f
+Icon=/opt/pycharm/pycharm-2025.2.0.1/bin/pycharm.png
+Exec="/opt/pycharm/pycharm-2025.2.0.1/bin/pycharm" %f
 iComment=IntelliJ PyCharm Integrated Development Environment
 Categories=Development;IDE;
 Terminal=false
