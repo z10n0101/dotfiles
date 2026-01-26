@@ -1,0 +1,153 @@
+```markdown
+# Anne Pro 2 (QMK) Setup Guide - Fedora Linux
+
+This document covers the configuration of the **Anne Pro 2** keyboard with **QMK firmware** on **Fedora Linux**. It includes instructions for compiling the firmware, setting up Bluetooth connectivity, and preparing the software stack for the Audio Visualizer (music synchronization).
+
+## 1. QMK Firmware Setup
+
+To enable advanced features (such as OpenRGB control), the QMK firmware must be compiled with specific settings enabled.
+
+### Source
+We used the official tags from the QMK repository:
+* **URL:** [https://github.com/qmk/qmk_firmware/tags](https://github.com/qmk/qmk_firmware/tags)
+* Download and extract the appropriate version.
+
+### Dependencies
+Install the necessary compilation tools on Fedora:
+
+```bash
+sudo dnf install qmk arm-none-eabi-gcc-cs arm-none-eabi-newlib
+
+```
+
+### Configuration for OpenRGB
+
+To allow **OpenRGB** and **Keyboard Visualizer** to communicate with the keyboard, the `RAW_ENABLE` option **must** be enabled.
+
+1. Locate the file: `keyboards/annepro2/keymaps/your_user/rules.mk` (or the general `rules.mk`).
+2. Add or modify the following line:
+
+```makefile
+RAW_ENABLE = yes
+
+```
+
+### Compiling and Flashing
+
+Run the compilation from the QMK root directory:
+
+```bash
+make annepro2:your_user
+
+```
+
+After successful compilation, flash the `.bin` file using `annepro2-tools` or a relevant flasher.
+
+---
+
+## 2. Bluetooth Configuration
+
+Bluetooth connectivity on Linux requires a specific procedure due to how QMK and Linux handle HID connections.
+
+### Tool
+
+We use `bluetoothctl` to manage the connection.
+
+### Pairing Procedure
+
+1. Launch the tool: `bluetoothctl`
+2. Put the keyboard into pairing mode (hold `Fn2 + 2` for 5 seconds).
+3. Scan: `scan on`
+4. Find device and pair: `pair MAC_ADDRESS`
+5. Trust device: `trust MAC_ADDRESS`
+6. Connect: `connect MAC_ADDRESS`
+
+### ⚠️ Specific Behavior (Workaround)
+
+There is currently a "quirk" in the communication where the keyboard does not send input immediately after the initial connection event.
+
+**The "Double Connect" Solution:**
+
+1. When the keyboard connects for the first time (or wakes up), the status shows `Connected`, but keystrokes do not register.
+2. You must trigger the Bluetooth slot shortcut on the keyboard again (e.g., a short press on `Fn2 + 2`).
+3. This forces a reconnection/handshake refresh, after which input works instantly and normally.
+
+---
+
+## 3. Audio Visualizer & OpenRGB Setup
+
+The goal is to enable the lights to sync with music rhythm. This requires a chain: *Music -> Keyboard Visualizer -> OpenRGB -> Keyboard*.
+
+### A. System Dependencies
+
+Install libraries for audio (OpenAL), USB communication (hidapi), and the Qt development environment:
+
+```bash
+sudo dnf install openal-soft openal-soft-devel hidapi qt5-qtbase-devel
+
+```
+
+### B. OpenRGB (Server)
+
+1. **Installation:** `sudo dnf install openrgb` (or use the AppImage).
+2. **Udev Rules (Crucial Step):**
+Since we are using QMK, the Vendor ID is not the standard Anne Pro (`04d9`), but the QMK ID (`ac20`).
+Create the file `/etc/udev/rules.d/60-openrgb.rules` and add:
+```udev
+# Anne Pro 2 C18 (QMK) - Enables access without sudo
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="ac20", ATTRS{idProduct}=="8009", TAG+="uaccess"
+KERNEL=="hidraw*", ATTRS{idVendor}=="ac20", ATTRS{idProduct}=="8009", TAG+="uaccess"
+
+```
+
+
+3. **Applying Rules:**
+```bash
+sudo udevadm control --reload-rules && sudo udevadm trigger
+
+```
+
+
+*Note:* If conflicts arise, check for and remove duplicate rules in `/usr/lib/udev/rules.d/`.
+
+### C. Keyboard Visualizer (Client)
+
+Since pre-built binaries are not available for Linux, we compiled it manually.
+
+1. Download source code (GitHub: CalcProgrammer1/KeyboardVisualizer).
+2. Generate the Makefile using `qmake`:
+```bash
+qmake
+
+```
+
+
+3. Compile:
+```bash
+make
+
+```
+
+
+*(We resolved the `AL/al.h: No such file` error by installing the `openal-soft-devel` package).*
+4. Run:
+```bash
+./KeyboardVisualizer
+
+```
+
+
+
+---
+
+## Current Status
+
+* [x] **Firmware:** QMK compiled with `RAW_ENABLE=yes`.
+* [x] **Bluetooth:** Working via the "double click" method.
+* [x] **OpenRGB:** Detects the keyboard (thanks to the custom udev rule for the `ac20` ID).
+* [x] **Visualizer:** Successfully compiled and running.
+* [ ] **Synchronization:** The final step remains: connecting the Visualizer to the OpenRGB server to enable real-time lighting effects.
+
+```
+
+```
